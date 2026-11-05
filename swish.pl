@@ -10,25 +10,77 @@
 % 2. MOTOR DE INFERÊNCIA E REGRAS DE DIAGNÓSTICO (Encadeamento para trás)
 % Sugestão para alcançar as 20 regras mínimas: desmembrar sintomas e níveis de gravidade.
 
+% Bloco 1: Dengue e as suas variações de gravidade
+hipotese(dengue_grave) :-
+    verifica(febre_alta),
+    verifica(dor_atras_dos_olhos),
+    verifica(sangramento_nas_gengivas_ou_nariz),
+    verifica(dor_abdominal_intensa).
+
+hipotese(dengue_com_sinais_de_alarme) :-
+    verifica(febre_alta),
+    verifica(dor_muscular_intensa),
+    verifica(vomitos_persistentes).
+
 hipotese(dengue_classica) :-
     verifica(febre_alta),
     verifica(dor_atras_dos_olhos),
     verifica(dor_de_cabeca),
     verifica(dor_muscular_intensa).
 
-hipotese(chikungunya) :-
+% Bloco 2: Chikungunya e Zika
+hipotese(chikungunya_aguda) :-
     verifica(febre_alta_subita),
     verifica(dor_intensa_nas_articulacoes),
     verifica(inchaco_nas_articulacoes).
 
-hipotese(zika) :-
+hipotese(zika_gestante) :-
+    verifica(febre_baixa_ou_ausente),
+    verifica(manchas_vermelhas_com_coceira),
+    verifica(paciente_gestante).
+
+hipotese(zika_comum) :-
     verifica(febre_baixa_ou_ausente),
     verifica(manchas_vermelhas_com_coceira),
     verifica(olhos_vermelhos_sem_secrecao).
 
-% Tratamento de Exceção: Regra ativada caso nenhuma das anteriores seja satisfeita
-hipotese(desconhecido).
+% Bloco 3: Doenças Respiratórias
+hipotese(covid_grave) :-
+    verifica(febre_alta),
+    verifica(tosse_seca),
+    verifica(falta_de_ar_grave),
+    verifica(saturacao_baixa).
 
+hipotese(covid_leve_moderada) :-
+    verifica(febre_baixa_ou_ausente),
+    verifica(tosse_seca),
+    verifica(perda_de_olfato_ou_paladar).
+
+hipotese(gripe_comum) :-
+    verifica(febre_alta),
+    verifica(tosse_com_catarro),
+    verifica(dor_de_garganta),
+    verifica(coriza).
+
+% Bloco 4: Outras Endemias (Leptospirose e Febre Amarela)
+hipotese(leptospirose_grave) :-
+    verifica(febre_alta),
+    verifica(dor_nas_panturrilhas),
+    verifica(pele_e_olhos_amarelados).
+
+hipotese(leptospirose_fase_inicial) :-
+    verifica(febre_alta),
+    verifica(dor_nas_panturrilhas),
+    verifica(contacto_com_agua_de_enchentes).
+
+hipotese(febre_amarela) :-
+    verifica(febre_alta),
+    verifica(calafrios),
+    verifica(pele_e_olhos_amarelados),
+    verifica(sangramento_nas_gengivas_ou_nariz).
+
+% Tratamento de Exceção (Fallback)
+hipotese(desconhecido).
 
 % 3. INTERFACE DE INTERAÇÃO COM O USUÁRIO (Console/Terminal)
 % Verifica se o sintoma já foi perguntado. Se não, pergunta ao usuário.
@@ -65,21 +117,39 @@ mostrar_resultado(Doenca) :-
     explicar(Doenca).
 
 
-% 5. MÓDULO DE EXPLICAÇÃO (Como / Por que)
+% ====================================================================
+% 5. MÓDULO DE EXPLICAÇÃO (Obrigatório para justificação)
+% ====================================================================
+
+explicar(dengue_grave) :- 
+    nl, write('JUSTIFICATIVA:'), nl,
+    write('- Factos: Presenca de febre associada a sinais de choque (dor abdominal intensa e hemorragia).'), nl,
+    write('- Regra: O quadro evoluiu para Dengue Grave, exigindo internamento imediato.').
+
+explicar(dengue_com_sinais_de_alarme) :- 
+    nl, write('JUSTIFICATIVA:'), nl,
+    write('- Factos: Febre e dor muscular associadas a vomitos persistentes.'), nl,
+    write('- Regra: O vomito persistente altera a classificacao para risco moderado/alto.').
+
 explicar(dengue_classica) :- 
-    nl, write('JUSTIFICATIVA (Como o sistema chegou a essa conclusao):'), nl,
-    write('- Fatos confirmados: O paciente relatou febre alta, dor retro-orbital, dor de cabeca e mialgia intensa.'), nl,
-    write('- Regra aplicada: Estes sintomas combinados fecham o protocolo primario de suspeita de Dengue Classica.').
+    nl, write('JUSTIFICATIVA:'), nl,
+    write('- Factos: Febre alta, dor retro-orbital e dor muscular intensa (mialgia).'), nl,
+    write('- Regra: Sintomatologia padrao e clássica de infecao por Dengue sem complicacoes.').
 
-explicar(chikungunya) :- 
-    nl, write('JUSTIFICATIVA (Como o sistema chegou a essa conclusao):'), nl,
-    write('- Fatos confirmados: O paciente relatou febre alta subita associada a forte dor e inchaco articular.'), nl,
-    write('- Regra aplicada: O comprometimento articular agudo e o principal diferencial da Chikungunya.').
+explicar(zika_gestante) :- 
+    nl, write('JUSTIFICATIVA:'), nl,
+    write('- Factos: Sintomas brandos de Zika associados ao estado de gravidez.'), nl,
+    write('- Regra: A combinacao ativa o protocolo de alerta maximo para risco de microcefalia fetal.').
 
-explicar(zika) :- 
-    nl, write('JUSTIFICATIVA (Como o sistema chegou a essa conclusao):'), nl,
-    write('- Fatos confirmados: Ausencia de febre alta, presenca de exantema pruriginoso (manchas com coceira) e conjuntivite.'), nl,
-    write('- Regra aplicada: Sintomas brandos com forte presenca de manchas e olhos vermelhos indicam Zika virus.').
+explicar(covid_grave) :- 
+    nl, write('JUSTIFICATIVA:'), nl,
+    write('- Factos: Sintomas respiratorios associados a dispneia (falta de ar) e hipoxia.'), nl,
+    write('- Regra: O comprometimento pulmonar severo indica COVID-19 em estagio grave.').
+
+explicar(leptospirose_fase_inicial) :- 
+    nl, write('JUSTIFICATIVA:'), nl,
+    write('- Factos: Febre e mialgia severa nas panturrilhas, com historico epidemiologico de enchentes.'), nl,
+    write('- Regra: O contacto com agua contaminada e a dor na panturrilha sao marcadores clinicos primarios.').
 
 % Limpeza da memória para nova consulta
 limpar_fatos :- 
