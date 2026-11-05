@@ -151,6 +151,36 @@ explicar(leptospirose_fase_inicial) :-
     write('- Factos: Febre e mialgia severa nas panturrilhas, com historico epidemiologico de enchentes.'), nl,
     write('- Regra: O contacto com agua contaminada e a dor na panturrilha sao marcadores clinicos primarios.').
 
+explicar(chikungunya_aguda) :- 
+    nl, write('JUSTIFICATIVA:'), nl,
+    write('- Factos: Febre alta subita associada a forte dor e inchaco articular.'), nl,
+    write('- Regra: O comprometimento articular agudo e o principal diferencial da Chikungunya.').
+
+explicar(zika_comum) :- 
+    nl, write('JUSTIFICATIVA:'), nl,
+    write('- Factos: Ausencia de febre alta, presenca de exantema pruriginoso (manchas com coceira) e conjuntivite.'), nl,
+    write('- Regra: Sintomas brandos com forte presenca de manchas e olhos vermelhos indicam Zika virus.').
+
+explicar(covid_leve_moderada) :- 
+    nl, write('JUSTIFICATIVA:'), nl,
+    write('- Factos: Febre ausente ou baixa, tosse seca e perda de olfato/paladar (anosmia/ageusia).'), nl,
+    write('- Regra: A perda de sentidos quimiossensoriais e um marcador forte para COVID-19 leve.').
+
+explicar(gripe_comum) :- 
+    nl, write('JUSTIFICATIVA:'), nl,
+    write('- Factos: Febre alta, tosse produtiva (com catarro), dor de garganta e coriza.'), nl,
+    write('- Regra: Quadro respiratorio superior classico de infeccao por Influenza.').
+
+explicar(leptospirose_grave) :- 
+    nl, write('JUSTIFICATIVA:'), nl,
+    write('- Factos: Febre, mialgia nas panturrilhas e ictericia (pele/olhos amarelados).'), nl,
+    write('- Regra: A evolucao para ictericia indica a Sindrome de Weil (fase grave da Leptospirose).').
+
+explicar(febre_amarela) :- 
+    nl, write('JUSTIFICATIVA:'), nl,
+    write('- Factos: Febre, calafrios, ictericia e hemorragia.'), nl,
+    write('- Regra: A combinacao de dano hepatico (ictericia) com quadro hemorragico e caracteristica de Febre Amarela.').
+
 % Limpeza da memória para nova consulta
 limpar_fatos :- 
     retractall(sim(_)), 
